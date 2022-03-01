@@ -28,7 +28,7 @@ const routes: Array<RouteConfig> = [
     path: '/campaigns',
     name: 'Campaigns list',
     component: CampaignsList,
-    beforeEnter: redirectAnonymous,
+    //beforeEnter: redirectAnonymous,
   },
 ];
 
