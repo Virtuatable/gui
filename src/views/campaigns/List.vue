@@ -7,33 +7,26 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import listCampaigns from '@/api/campaigns/listCampaigns'
 import ICampaign from '@/interfaces/ICampaign';
-import { mapActions, mapState } from 'vuex';
 import { ActionTypes } from '@/store/campaigns/enums';
-import { campaigns as store } from '@/store/campaigns'
+import { namespace } from 'vuex-class'
+import { mapState } from 'vuex';
+
+const campaigns = namespace('campaigns');
 
 @Component({
   computed: {
     ...mapState('campaigns', ['campaigns']),
-  },
-  methods: {
-    ...mapActions('campaigns', {
-      fetchCampaigns: ActionTypes.FETCH_CAMPAIGNS
-    })
   }
 })
 export default class ListCampaigns extends Vue {
   public campaigns!: Array<ICampaign>;
 
-  fetchCampaigns() {
-    return store.dispatch("campaigns/FETCH_CAMPAIGNS");
-  }
+  // @ts-ignore
+  @campaigns.Action(ActionTypes.FETCH_CAMPAIGNS) fetchCampaigns
 
   mounted() {
-    listCampaigns().then(campaigns => {
-      console.log(this.fetchCampaigns());
-    })
+    this.fetchCampaigns();
   }
 }
 </script>

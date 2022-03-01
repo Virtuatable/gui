@@ -1,5 +1,5 @@
 import ICampaign from '@/interfaces/ICampaign';
-import { ActionTypes } from '../ActionTypes';
+import { ActionTypes } from './enums';
 import { MutationTypes } from './enums';
 import { ActionTree, ActionContext } from 'vuex';
 import { Mutations } from './mutations';
@@ -14,14 +14,15 @@ type AugmentedContext = {
 } & Omit<ActionContext<IState, ApplicationState>, 'commit'>
 
 export interface Actions {
-  [ActionTypes.CAMPAIGNS_LIST](
+  [ActionTypes.FETCH_CAMPAIGNS](
     { commit }: AugmentedContext,
     payload: Array<ICampaign>
   ): Promise<Array<ICampaign>>
 }
 
 export const actions: ActionTree<IState, ApplicationState> & Actions = {
-  [ActionTypes.CAMPAIGNS_LIST]({ commit }) {
+  [ActionTypes.FETCH_CAMPAIGNS]({ commit }) {
+
     return new Promise((resolve: any) => {
       setTimeout(() => {
         const data: Array<ICampaign> = [{name: 'My campaign'}];
