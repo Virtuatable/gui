@@ -8,5 +8,6 @@
  * @param next the function used to manipulate the history.
  */
 export default function redirectAnonymous(to: any, from: any, next: Function) {
-  next({path: '/login'});
+  const session_id: string | null = localStorage.getItem('session_id')
+  session_id !== null ? next() : next({path: '/login'});
 }

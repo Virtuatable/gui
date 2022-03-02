@@ -23,7 +23,7 @@ export default class ListCampaigns extends Vue {
   public campaigns!: Array<ICampaign>;
 
   // @ts-ignore
-  @campaigns.Action(ActionTypes.FETCH_CAMPAIGNS) fetchCampaigns
+  @campaigns.Action(ActionTypes.FETCH_CAMPAIGNS) fetchCampaigns;
 
   mounted() {
     this.fetchCampaigns();
