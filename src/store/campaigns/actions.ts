@@ -5,6 +5,7 @@ import { ActionTree, ActionContext } from 'vuex';
 import { Mutations } from './mutations';
 import { IState } from './state';
 import { ApplicationState } from '..';
+import { ResultsList } from '@/interfaces/api/ResultsList';
 
 type AugmentedContext = {
   commit<K extends keyof Mutations>(
@@ -25,7 +26,13 @@ export const actions: ActionTree<IState, ApplicationState> & Actions = {
 
     return new Promise((resolve: any) => {
       setTimeout(() => {
-        const data: Array<ICampaign> = [{name: 'My campaign'}];
+        const data: ResultsList<ICampaign> = {
+          count: 2,
+          items: [
+            {name: 'My campaign'},
+            {name: 'My other campaign'}
+          ]
+        };
         commit(MutationTypes.SET_CAMPAIGNS_LIST, data);
         resolve(data);
       }, 1000)

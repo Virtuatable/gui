@@ -1,9 +1,10 @@
+import { ResultsList } from "@/interfaces/api/ResultsList";
 import ICampaign from "@/interfaces/ICampaign";
 
 export interface IState {
-  campaigns: Array<ICampaign>;
+  campaigns: ResultsList<ICampaign>;
 };
 
 export const state: IState = {
-  campaigns: [{name: 'essai'}]
+  campaigns: {count: 0, items: []}
 };
