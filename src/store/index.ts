@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 import { campaigns } from './campaigns';
+import { sessions } from './sessions'
 
 Vue.use(Vuex);
 
@@ -14,6 +15,7 @@ export default new Vuex.Store({
   actions: {
   },
   modules: {
-    campaigns
+    campaigns,
+    sessions
   },
 });
