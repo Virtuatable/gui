@@ -1,7 +1,13 @@
 <template>
   <v-container>
     <h1>Campaigns</h1>
-    <div>{{ campaigns }}</div>
+    <v-container fluid>
+      <v-row dense>
+        <v-col v-for="campaign in campaigns.items" :key="campaign.id" cols="4">
+          <Campaign :campaign="campaign" />
+        </v-col>
+      </v-row>
+    </v-container>
   </v-container>
 </template>
 
@@ -11,13 +17,15 @@ import ICampaign from '@/interfaces/ICampaign';
 import { ActionTypes } from '@/store/campaigns/enums';
 import { namespace } from 'vuex-class'
 import { mapState } from 'vuex';
+import Campaign from "@/components/Campaign.vue"
 
 const campaigns = namespace('campaigns');
 
 @Component({
   computed: {
     ...mapState('campaigns', ['campaigns']),
-  }
+  },
+  components: { Campaign }
 })
 export default class ListCampaigns extends Vue {
   public campaigns!: Array<ICampaign>;
