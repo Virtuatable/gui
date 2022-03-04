@@ -10,11 +10,6 @@ Vue.use(VueRouter);
 
 const routes: Array<RouteConfig> = [
   {
-    path: '/',
-    name: 'Home',
-    component: Home,
-  },
-  {
     path: '/subscribe',
     name: 'Subscription view',
     component: Subscription,
