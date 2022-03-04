@@ -1,6 +1,7 @@
 <template>
   <v-app>
     <v-main>
+      <MainBar />
       <router-view/>
     </v-main>
   </v-app>
@@ -8,12 +9,12 @@
 
 <script lang="ts">
 import Vue from 'vue';
+import MainBar from '@/components/MainBar.vue'
 
 export default Vue.extend({
   name: 'App',
-
-  data: () => ({
-    //
-  }),
+  components: {
+    MainBar
+  }
 });
 </script>
