@@ -1,7 +1,7 @@
 <template>
   <v-app>
     <v-main>
-      <MainBar />
+      <main-menu v-if="is_authenticated()" />
       <router-view/>
     </v-main>
   </v-app>
@@ -9,12 +9,17 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import MainBar from '@/components/MainBar.vue'
+import MainMenu from '@/components/MainMenu.vue'
 
 export default Vue.extend({
   name: 'App',
   components: {
-    MainBar
+    MainMenu
+  },
+  methods: {
+    is_authenticated() {
+      return localStorage.getItem('session_id') !== null
+    }
   }
 });
 </script>
