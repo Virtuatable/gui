@@ -1,4 +1,4 @@
-import ICampaign from '@/interfaces/ICampaign';
+import ICampaign, { ICampaignDetails } from '@/interfaces/ICampaign';
 import { ActionTypes } from './enums';
 import { MutationTypes } from './enums';
 import { ActionTree, ActionContext } from 'vuex';
@@ -6,6 +6,7 @@ import { Mutations } from './mutations';
 import { IState } from './state';
 import { ApplicationState } from '..';
 import { ResultsList } from '@/interfaces/api/ResultsList';
+import { InvitationStatus } from '@/interfaces/IInvitation';
 
 type AugmentedContext = {
   commit<K extends keyof Mutations>(
@@ -22,7 +23,15 @@ export interface Actions {
   [ActionTypes.GET_CAMPAIGN_BANNER](
     { commit }: AugmentedContext,
     payload: string
-  ): Promise<string>
+  ): Promise<string>,
+  [ActionTypes.DELETE_CAMPAIGN](
+    { commit }: AugmentedContext,
+    payload: string
+  ): Promise<string>,
+  [ActionTypes.GET_CAMPAIGN_DETAILS](
+    context: any,
+    payload: string,
+  ): Promise<ICampaignDetails>
 }
 
 export const actions: ActionTree<IState, ApplicationState> & Actions = {
@@ -67,6 +76,39 @@ export const actions: ActionTree<IState, ApplicationState> & Actions = {
       },
       1000);
     });
+  },
+  [ActionTypes.DELETE_CAMPAIGN]({ commit }, campaign_id: string) {
+    return new Promise((resolve: any) => {
+      commit(MutationTypes.DELETE_CAMPAIGN, campaign_id);
+      resolve(campaign_id);
+    });
+  },
+  [ActionTypes.GET_CAMPAIGN_DETAILS](context: any, campaign_id: string) {
+    return new Promise((resolve: any) => {
+      setTimeout(() => {
+        resolve({
+          id: 'my_campaign_id',
+          name: 'My Detailled campaign',
+          description: 'Mais... Ce n\'est pas la campagne sur laquelle j\'ai cliqué ?!',
+          banner: '',
+          invitations: [
+            {
+              player: {username: 'John Doe', email: 'john@doe.com'},
+              issued_date: Date.now(),
+              acceptation_date: Date.now(),
+              status: InvitationStatus.PENDING
+            },
+            {
+              player: {username: 'Jane Doe', email: 'jane@doe.com'},
+              issued_date: Date.now(),
+              acceptation_date: Date.now(),
+              status: InvitationStatus.ACCEPTED
+            }
+          ]
+
+        })
+      }, 1000);
+    })
   }
 }
 
