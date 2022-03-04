@@ -1,6 +1,6 @@
 <template>
   <v-card class="mx-auto my-auto" max-width="400">
-    <v-img class="white--text align-end" v-if="campaign.banner !== ''" :src="campaign.banner" height="200px">
+    <v-img class="white--text align-end" v-if="campaign.banner !== ''" :src="banner" height="200px">
       <v-card-title class="pb-1 font-weight-light">{{ campaign.name }}</v-card-title>
     </v-img>
     <v-card-title v-else>{{ campaign.name }}</v-card-title>
@@ -44,8 +44,8 @@ export default class Campaign extends Vue {
   //@ts-ignore
   @ns.Action(ActionTypes.DELETE_CAMPAIGN) deleteCampaign;
 
-  mounted() {
-    this.getBanner(this.campaign.id)
+  get banner(): string {
+    return `http://localhost:9292/campaigns/${this.campaign.id}/banners/${this.campaign.banner}`
   }
 }
 </script>

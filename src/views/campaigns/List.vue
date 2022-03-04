@@ -1,9 +1,9 @@
 <template>
   <v-container>
-    <h1>Campaigns</h1>
+    <div class="text-h2 mt-3 ml-2 mb-5">Campaigns</div>
     <v-container fluid>
       <v-row dense>
-        <v-col v-for="campaign in campaigns.items" :key="campaign.id" cols="4">
+        <v-col v-for="campaign in campaigns" :key="campaign.id" cols="4">
           <Campaign :campaign="campaign" />
         </v-col>
       </v-row>
