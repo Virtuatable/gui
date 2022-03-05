@@ -1,19 +1,30 @@
 <template>
-  <v-list-item link>
+  <v-list-item>
     <v-list-item-icon>
       <v-icon :color="color">mdi-account</v-icon>
     </v-list-item-icon>
     <v-list-item-content>
       <v-list-item-title>
-        {{ invitation.account_id}}
-        <span class="grey--text font-weight-light">
+        {{ invitation.account.username}}
+        
+      </v-list-item-title>
+      <v-list-item-subtitle>
+        <span class="text--primary">
+          {{ invitation.account.email }}
+        </span>
+        <span class="grey--text font-weight-light" v-if="invitation.accepted_at !== null">
           Acceptée le {{ acceptation_date }}
         </span>
-      </v-list-item-title>
+        <span class="grey--text font-weight-light" v-else>
+          En attente
+        </span>
+      </v-list-item-subtitle>
     </v-list-item-content>
-    <v-list-item-icon>
-      <v-icon>mdi-trash-can-outline</v-icon>
-    </v-list-item-icon>
+    <v-list-item-action>
+      <v-btn icon>
+        <v-icon>mdi-trash-can-outline</v-icon>
+      </v-btn>
+    </v-list-item-action>
   </v-list-item>
 </template>
 

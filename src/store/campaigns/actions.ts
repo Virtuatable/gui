@@ -6,6 +6,7 @@ import { IState } from './state';
 import { ApplicationState } from '..';
 import Api from '@/api/utils/Api.ts'
 import IInvitation from '@/interfaces/IInvitation';
+import ICampaign from '@/interfaces/ICampaign'
 
 type AugmentedContext = {
   commit<K extends keyof Mutations>(

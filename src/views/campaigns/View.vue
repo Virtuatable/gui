@@ -17,13 +17,15 @@
       </v-img>
       <v-card-title class="text-h1" v-else>{{ campaign.name }}</v-card-title>
       <v-card-text>
-        <p class="mt-2">{{ campaign.description }}</p>
         <v-container fluid>
           <v-row dense>
-            <v-col cols="6"></v-col>
+            <v-col cols="6">
+              <div class="text-h4 mb-2">Description</div>
+              <p>{{ campaign.description }}</p>
+            </v-col>
             <v-col cols="6">
             <div class="text-h4">Joueurs</div>
-            <v-list dense shaped>
+            <v-list dense two-line>
               <Invitation :invitation="invitation" v-for="(invitation, i) in campaign.invitations" :key="i" />
             </v-list>
             </v-col>
