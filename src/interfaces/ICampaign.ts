@@ -5,8 +5,6 @@ export default interface ICampaign {
   name: string;
   banner: string;
   description: string;
-}
-
-export interface ICampaignDetails extends ICampaign {
+  players: number;
   invitations: Array<IInvitation>
 }

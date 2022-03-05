@@ -4,7 +4,7 @@
       <v-card-title class="pb-1 font-weight-light">{{ campaign.name }}</v-card-title>
     </v-img>
     <v-card-title v-else>{{ campaign.name }}</v-card-title>
-    <v-card-subtitle class="grey--text pb-1 font-weight-light">ID : {{ campaign.id }}</v-card-subtitle>
+    <v-card-subtitle class="grey--text darken-2 pb-1 font-weight-light">Taille du groupe : {{ campaign.players }}</v-card-subtitle>
     <v-card-text class="text--primary">{{ campaign.description }}</v-card-text>
     <v-card-actions class="pt-0">
       <v-tooltip bottom>
@@ -45,7 +45,7 @@ export default class Campaign extends Vue {
   @ns.Action(ActionTypes.DELETE_CAMPAIGN) deleteCampaign;
 
   get banner(): string {
-    return `http://localhost:9292/campaigns/${this.campaign.id}/banners/${this.campaign.banner}`
+    return `http://localhost:3000/banners/${this.campaign.id}/${this.campaign.banner}`
   }
 }
 </script>

@@ -1,6 +1,6 @@
 <template>
   <v-container v-if="loaded">
-    <v-breadcrumbs :items="breadcrumbs.concat([lastBreadcrumb])">
+    <v-breadcrumbs :items="breadcrumbs">
       <template v-slot:divider>
         <v-icon>mdi-chevron-right</v-icon>
       </template>
@@ -8,8 +8,8 @@
     <v-card>
       <v-img
         v-if="campaign.banner !== ''"
-        max-height="200"
-        :lazy-src="campaign.banner"
+        max-height="200px"
+        :lazy-src="banner"
         class="white--text align-end"
         gradient="to top right, rgba(100,115,201,.5), rgba(25,32,72,.8)"
       >
@@ -35,13 +35,14 @@
 </template>
 
 <script lang="ts">
-import { ICampaignDetails } from '@/interfaces/ICampaign';
+import ICampaign from '@/interfaces/ICampaign';
 import { ActionTypes } from '@/store/campaigns/enums';
 import { Component, Vue } from 'vue-property-decorator'
 import { namespace } from 'vuex-class';
 import moment from "moment";
 import IInvitation from '@/interfaces/IInvitation';
 import Invitation from '@/components/Invitation.vue'
+import Api from '@/api/utils/Api.ts'
 
 const campaigns = namespace('campaigns');
 
@@ -49,7 +50,7 @@ const campaigns = namespace('campaigns');
   components: { Invitation }
 })
 export default class CampaignView extends Vue {
-  campaign: ICampaignDetails = {
+  campaign: ICampaign = {
     name: '',
     description: '',
     id: '',
@@ -70,36 +71,37 @@ export default class CampaignView extends Vue {
       disabled: false,
       href: '/campaigns'
     }
-  ]
-
-  lastBreadcrumb = {
-    text: '',
-    disabled: true,
-    href: ''
-  }
+  ];
 
   // @ts-ignore
   @campaigns.Action(ActionTypes.GET_CAMPAIGN_DETAILS) getCampaignDetails;
   // @ts-ignore
-  @campaigns.Action(ActionTypes.GET_CAMPAIGN_BANNER) getBanner
+  @campaigns.Action(ActionTypes.FETCH_INVITATIONS) getInvitations
 
   acceptation_date(invitation: IInvitation) {
     return moment(invitation.acceptation_date).format("DD/MM/YYYY")
   }
 
+  get banner(): string {
+    return Api.path(`/banners/${this.campaign.id}/${this.campaign.banner}`);
+  }
+
   mounted() {
-    this.getCampaignDetails(this.$route.params.id).then((details: ICampaignDetails) => {
-      this.campaign = details;
+    this.getCampaignDetails(this.$route.params.id).then((campaign: ICampaign) => {
+      this.campaign = campaign
+      this.getInvitations(this.$route.params.id).then((invitations: Array<IInvitation>) => {
+        this.campaign = {
+          ...this.campaign,
+          invitations: invitations
+        };
+      });
       this.loaded = true;
-    })
-    this.getBanner(this.$route.params.id).then((banner: string) => {
-      this.campaign.banner = banner;
-    })
-    this.lastBreadcrumb = {
+    });
+    this.breadcrumbs.push({
       text: this.$route.params.id,
       disabled: true,
       href: `/campaigns/${this.$route.params.id}`
-    }
+    });
   }
 }
 </script>

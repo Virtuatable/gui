@@ -5,7 +5,7 @@
     </v-list-item-icon>
     <v-list-item-content>
       <v-list-item-title>
-        {{ invitation.player.username}}
+        {{ invitation.account_id}}
         <span class="grey--text font-weight-light">
           Acceptée le {{ acceptation_date }}
         </span>
