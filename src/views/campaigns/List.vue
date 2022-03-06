@@ -1,13 +1,10 @@
 <template>
-  <v-container>
-    <div class="text-h2 mt-3 ml-2 mb-5">Campaigns</div>
-    <v-container fluid>
-      <v-row dense>
-        <v-col v-for="campaign in campaigns" :key="campaign.id" cols="4">
-          <Campaign :campaign="campaign" />
-        </v-col>
-      </v-row>
-    </v-container>
+  <v-container fluid :class="{'mt-5': !$vuetify.breakpoint.mobile}">
+    <v-row dense>
+      <v-col v-for="campaign in campaigns" :key="campaign.id" xs="12" md="4">
+        <Campaign :campaign="campaign" />
+      </v-col>
+    </v-row>
   </v-container>
 </template>
 

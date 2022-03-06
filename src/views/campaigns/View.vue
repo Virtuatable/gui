@@ -5,7 +5,7 @@
         <v-icon>mdi-chevron-right</v-icon>
       </template>
     </v-breadcrumbs>
-    <v-card>
+    <v-card :flat="$vuetify.breakpoint.mobile">
       <v-img
         v-if="campaign.banner !== ''"
         max-height="200px"
@@ -19,11 +19,11 @@
       <v-card-text>
         <v-container fluid>
           <v-row dense>
-            <v-col cols="6">
+            <v-col md="6" xs="12">
               <div class="text-h4 mb-2">Description</div>
               <p>{{ campaign.description }}</p>
             </v-col>
-            <v-col cols="6">
+            <v-col md="6" xs="12">
             <div class="text-h4">Joueurs</div>
             <v-list dense two-line>
               <Invitation :invitation="invitation" v-for="(invitation, i) in campaign.invitations" :key="i" />
@@ -57,7 +57,8 @@ export default class CampaignView extends Vue {
     description: '',
     id: '',
     banner: '',
-    invitations: []
+    invitations: [],
+    players: 0
   };
 
   loaded: boolean = false;
