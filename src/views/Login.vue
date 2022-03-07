@@ -1,23 +1,28 @@
 <template>
-  <v-main class="d-flex align-center full-width">
-    <v-container>
-      <v-row>
-        <v-col cols="6" offset="3">
-          <v-card>
-            <v-card-title>Login</v-card-title>
-            <v-card-text>
-              <v-form class="pa-2">
-                <v-text-field outlined v-model="credentials.username" label="Username"></v-text-field>
-                <v-text-field outlined v-model="credentials.password" label="Password" type="password"></v-text-field>
-              </v-form>
-            </v-card-text>
-            <v-card-actions>
-              <v-btn @click="createSession(credentials)"  text color="primary">Log in</v-btn>
-            </v-card-actions>
-          </v-card>
-        </v-col>
-      </v-row>
-    </v-container>
+  <v-main>
+    <div class="d-flex full-width flex-column">
+      <HomeMenu />
+      <div class="d-flex align-center flex-grow-1">
+        <v-container>
+          <v-row>
+            <v-col cols="6" offset="3">
+              <v-card>
+                <v-card-title>Login</v-card-title>
+                <v-card-text>
+                  <v-form class="pa-2">
+                    <v-text-field outlined v-model="credentials.username" label="Username"></v-text-field>
+                    <v-text-field outlined v-model="credentials.password" label="Password" type="password"></v-text-field>
+                  </v-form>
+                </v-card-text>
+                <v-card-actions>
+                  <v-btn @click="createSession(credentials)" text color="primary">Log in</v-btn>
+                </v-card-actions>
+              </v-card>
+            </v-col>
+          </v-row>
+        </v-container>
+      </div>
+    </div>
   </v-main>
 </template>
 
@@ -26,10 +31,13 @@ import { ICredentials } from '@/interfaces/ICredentials';
 import { ActionTypes } from '@/store/sessions/enums';
 import { Component, Vue } from 'vue-property-decorator'
 import { namespace } from 'vuex-class'
+import HomeMenu from '@/components/HomeMenu.vue'
 
 const sessions = namespace('sessions');
 
-@Component({})
+@Component({
+  components: { HomeMenu }
+})
 export default class Login extends Vue {
 
   public credentials: ICredentials = {

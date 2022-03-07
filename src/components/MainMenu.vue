@@ -1,10 +1,10 @@
 <template>
   <v-app-bar color="deep-purple accent-4" dark>
-    <v-toolbar-title>Virtuatable</v-toolbar-title>
+    <v-btn text to="/" class="mr-2">Home</v-btn>
     <v-tooltip bottom>
       <template v-slot:activator="{ on, attrs }">
-        <v-btn v-on="on" v-bind="attrs" icon to="/campaigns">
-          <v-icon>mdi-script-text-outline</v-icon>
+        <v-btn v-on="on" v-bind="attrs" text to="/campaigns">
+          Campaigns
         </v-btn>
       </template>
       <span>Liste de campagnes</span>
