@@ -5,10 +5,16 @@ import Login from '../views/Login.vue'
 import CampaignsList from '../views/campaigns/List.vue'
 import CampaignDetails from '../views/campaigns/View.vue'
 import redirectAnonymous from './guards/redirectAnonymous'
+import Home from '../views/Home.vue'
 
 Vue.use(VueRouter);
 
 const routes: Array<RouteConfig> = [
+  {
+    path: '/',
+    name: 'Home',
+    component: Home
+  },
   {
     path: '/subscribe',
     name: 'Subscription view',
