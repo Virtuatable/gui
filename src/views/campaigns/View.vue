@@ -44,7 +44,7 @@ import { namespace } from 'vuex-class';
 import moment from "moment";
 import IInvitation from '@/interfaces/IInvitation';
 import Invitation from '@/components/Invitation.vue'
-import Api from '@/api/utils/Api.ts'
+import Api from '@/api/utils/Api'
 
 const campaigns = namespace('campaigns');
 

@@ -31,6 +31,7 @@ import { Component, Prop, Vue } from 'vue-property-decorator';
 import ICampaign from '@/interfaces/ICampaign'
 import { namespace } from 'vuex-class';
 import { ActionTypes } from '@/store/campaigns/enums';
+import Api from '@/api/utils/Api'
 
 const ns = namespace('campaigns')
 
@@ -45,7 +46,7 @@ export default class Campaign extends Vue {
   @ns.Action(ActionTypes.DELETE_CAMPAIGN) deleteCampaign;
 
   get banner(): string {
-    return `http://localhost:3000/banners/${this.campaign.id}/${this.campaign.banner}`
+    return Api.path(`/banners/${this.campaign.id}/${this.campaign.banner}`);
   }
 }
 </script>
