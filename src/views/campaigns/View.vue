@@ -19,11 +19,11 @@
       <v-card-text>
         <v-container fluid>
           <v-row dense>
-            <v-col md="6" xs="12">
+            <v-col md="8" xs="12">
               <div class="text-h4 mb-2">Description</div>
               <p>{{ campaign.description }}</p>
             </v-col>
-            <v-col md="6" xs="12">
+            <v-col md="4" xs="12">
             <div class="text-h4">Joueurs</div>
             <v-list dense two-line>
               <Invitation :invitation="invitation" v-for="(invitation, i) in campaign.invitations" :key="i" />
@@ -45,6 +45,7 @@ import moment from "moment";
 import IInvitation from '@/interfaces/IInvitation';
 import Invitation from '@/components/Invitation.vue'
 import Api from '@/api/utils/Api'
+import BreadcrumbsFactory, { Breadcrumb } from '@/factories/BreadcrumbsFactory';
 
 const campaigns = namespace('campaigns');
 
@@ -63,18 +64,7 @@ export default class CampaignView extends Vue {
 
   loaded: boolean = false;
 
-  breadcrumbs: any = [
-    {
-      text: 'Virtuatable',
-      disabled: false,
-      href: '/'
-    },
-    {
-      text: 'Campaigns',
-      disabled: false,
-      href: '/campaigns'
-    }
-  ];
+  breadcrumbs: Array<Breadcrumb> = [];
 
   // @ts-ignore
   @campaigns.Action(ActionTypes.GET_CAMPAIGN_DETAILS) getCampaignDetails;
@@ -90,6 +80,7 @@ export default class CampaignView extends Vue {
   }
 
   mounted() {
+    BreadcrumbsFactory.fromRoute(this.$route);
     this.getCampaignDetails(this.$route.params.id).then((campaign: ICampaign) => {
       this.campaign = campaign
       this.getInvitations(this.$route.params.id).then((invitations: Array<IInvitation>) => {
@@ -100,11 +91,7 @@ export default class CampaignView extends Vue {
       });
       this.loaded = true;
     });
-    this.breadcrumbs.push({
-      text: this.$route.params.id,
-      disabled: true,
-      href: `/campaigns/${this.$route.params.id}`
-    });
+    this.breadcrumbs = BreadcrumbsFactory.fromRoute(this.$route);
   }
 }
 </script>
