@@ -15,10 +15,8 @@ export default class BreadcrumbsFactory {
     let p: string = '';
     const elements: Array<string> = route.path.split('/');
     const crumbs: Array<Breadcrumb> = [];
-    console.log(elements);
     elements.forEach((part: string) => {
       p = p == '/' ? `/${part}` : `${p}/${part}`
-      console.log(p)
       crumbs.push(this.match(p, false));
     });
     return crumbs;
@@ -32,7 +30,6 @@ export default class BreadcrumbsFactory {
       text: matched.params.id || matched.name,
       disabled: disabled
     }
-    console.log(crumb);
     return crumb
   }
 }

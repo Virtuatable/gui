@@ -1,10 +1,6 @@
 <template>
   <v-container v-if="loaded">
-    <v-breadcrumbs :items="breadcrumbs">
-      <template v-slot:divider>
-        <v-icon>mdi-chevron-right</v-icon>
-      </template>
-    </v-breadcrumbs>
+    <Breadcrumbs :disableLast="true" />
     <v-card :flat="$vuetify.breakpoint.mobile">
       <v-img
         v-if="campaign.banner !== ''"
@@ -45,12 +41,13 @@ import moment from "moment";
 import IInvitation from '@/interfaces/IInvitation';
 import Invitation from '@/components/Invitation.vue'
 import Api from '@/api/utils/Api'
-import BreadcrumbsFactory, { Breadcrumb } from '@/factories/BreadcrumbsFactory';
+import BreadcrumbsFactory from '@/factories/BreadcrumbsFactory';
+import Breadcrumbs from '@/components/utils/Breadcrumbs.vue'
 
 const campaigns = namespace('campaigns');
 
 @Component({
-  components: { Invitation }
+  components: { Breadcrumbs, Invitation }
 })
 export default class CampaignView extends Vue {
   campaign: ICampaign = {
@@ -63,8 +60,6 @@ export default class CampaignView extends Vue {
   };
 
   loaded: boolean = false;
-
-  breadcrumbs: Array<Breadcrumb> = [];
 
   // @ts-ignore
   @campaigns.Action(ActionTypes.GET_CAMPAIGN_DETAILS) getCampaignDetails;
@@ -91,7 +86,6 @@ export default class CampaignView extends Vue {
       });
       this.loaded = true;
     });
-    this.breadcrumbs = BreadcrumbsFactory.fromRoute(this.$route);
   }
 }
 </script>

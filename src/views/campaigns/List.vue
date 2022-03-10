@@ -1,5 +1,8 @@
 <template>
-  <v-container fluid :class="{'mt-5': !$vuetify.breakpoint.mobile}">
+  <v-container>
+    <v-row dense>
+      <v-col xs="12"><Breadcrumbs /></v-col>
+    </v-row>
     <v-row dense>
       <v-col v-for="campaign in campaigns" :key="campaign.id" xs="12" md="4">
         <Campaign :campaign="campaign" />
@@ -15,6 +18,7 @@ import { ActionTypes } from '@/store/campaigns/enums';
 import { namespace } from 'vuex-class'
 import { mapState } from 'vuex';
 import Campaign from "@/components/Campaign.vue"
+import Breadcrumbs from '@/components/utils/Breadcrumbs.vue'
 
 const campaigns = namespace('campaigns');
 
@@ -22,7 +26,7 @@ const campaigns = namespace('campaigns');
   computed: {
     ...mapState('campaigns', ['campaigns']),
   },
-  components: { Campaign }
+  components: { Breadcrumbs, Campaign }
 })
 export default class ListCampaigns extends Vue {
   public campaigns!: Array<ICampaign>;
