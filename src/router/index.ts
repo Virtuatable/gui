@@ -4,6 +4,7 @@ import Subscription from '../views/Subscription.vue'
 import Login from '../views/Login.vue'
 import CampaignsList from '../views/campaigns/List.vue'
 import CampaignDetails from '../views/campaigns/View.vue'
+import CampaignPlayground from '../views/campaigns/Play.vue'
 import redirectAnonymous from './guards/redirectAnonymous'
 import Home from '../views/Home.vue'
 
@@ -37,6 +38,12 @@ const routes: Array<RouteConfig> = [
     component: CampaignDetails,
     beforeEnter: redirectAnonymous,
   },
+  {
+    path: '/campaigns/:id/play',
+    name: 'Campaign playground',
+    component: CampaignPlayground,
+    beforeEnter: redirectAnonymous,
+  }
 ];
 
 const router = new VueRouter({

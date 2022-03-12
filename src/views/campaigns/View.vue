@@ -43,6 +43,7 @@ import Invitation from '@/components/Invitation.vue'
 import Api from '@/api/utils/Api'
 import BreadcrumbsFactory from '@/factories/BreadcrumbsFactory';
 import Breadcrumbs from '@/components/utils/Breadcrumbs.vue'
+import CampaignsFactory from '@/factories/CampaignsFactory';
 
 const campaigns = namespace('campaigns');
 
@@ -50,14 +51,7 @@ const campaigns = namespace('campaigns');
   components: { Breadcrumbs, Invitation }
 })
 export default class CampaignView extends Vue {
-  campaign: ICampaign = {
-    name: '',
-    description: '',
-    id: '',
-    banner: '',
-    invitations: [],
-    players: 0
-  };
+  campaign: ICampaign = CampaignsFactory.empty()
 
   loaded: boolean = false;
 
