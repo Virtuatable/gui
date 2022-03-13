@@ -1,5 +1,5 @@
 <template>
-  <v-container fluid>
+  <div>
     <v-navigation-drawer v-model="drawer" absolute temporary>
       <v-list>
         <v-list-item v-for="map in campaign.maps" :key="map.name" @click="displayMap(map)">
@@ -10,22 +10,8 @@
     <v-btn icon absolute text @click.stop="drawer = !drawer">
       <v-icon>mdi-chevron-double-right</v-icon>
     </v-btn>
-    <svg xmlns="http://www.w3.org/2000/svg" v-if="map" width="100%" :height="51 * (map.height + 1)">
-      <g>
-        <template v-for="i in map.height">
-          <rect
-            v-for="j in map.width"
-            :key="`[${i};${j}]`"
-            fill="red"
-            :x="j * 51"
-            :y="i * 51"
-            width="50"
-            height="50"
-          />
-        </template>
-      </g>
-    </svg>
-  </v-container>
+    <Map :map="map" />
+  </div>
 </template>
 
 <script lang="ts">
@@ -35,10 +21,13 @@ import { namespace } from 'vuex-class';
 import { ActionTypes } from '@/store/campaigns/enums';
 import CampaignsFactory from '@/factories/CampaignsFactory';
 import IMap from '@/interfaces/IMap';
+import Map from '@/components/Map.vue'
 
 const campaigns = namespace('campaigns');
 
-@Component
+@Component({
+  components: { Map }
+})
 export default class Play extends Vue {
 
   drawer: boolean = false;
