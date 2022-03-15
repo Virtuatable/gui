@@ -24,7 +24,7 @@ import IPosition from '@/interfaces/utils/IPosition'
 @Component
 export default class ZoomableCanva extends Vue {
 
-  private origin: IPosition = {x: 10, y: 10}
+  private origin: IPosition = {x: 50, y: 50}
 
   private clickPosition!: IPosition;
 
