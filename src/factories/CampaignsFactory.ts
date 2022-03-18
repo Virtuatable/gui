@@ -9,7 +9,8 @@ export default class CampaignsFactory {
       banner: '',
       invitations: [],
       players: 0,
-      maps: []
+      maps: [],
+      tokens: []
     };
   }
 }

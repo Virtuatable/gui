@@ -10,7 +10,7 @@
     <v-btn icon absolute text @click.stop="drawer = !drawer">
       <v-icon>mdi-chevron-double-right</v-icon>
     </v-btn>
-    <Map :map="map" />
+    <Map :map="map" :tokens="campaign.tokens" />
   </div>
 </template>
 
@@ -37,7 +37,8 @@ export default class Play extends Vue {
   map: IMap = {
     name: '',
     height: 0,
-    width: 0
+    width: 0,
+    tokens: []
   };
   
   // @ts-ignore

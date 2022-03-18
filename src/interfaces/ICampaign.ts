@@ -1,5 +1,6 @@
 import IInvitation from "./IInvitation";
 import IMap from "./IMap";
+import IToken from "./IToken";
 
 export default interface ICampaign {
   id: string,
@@ -8,5 +9,6 @@ export default interface ICampaign {
   description: string;
   players: number;
   invitations: Array<IInvitation>;
-  maps: Array<IMap>
+  maps: Array<IMap>;
+  tokens: Array<IToken>;
 }
