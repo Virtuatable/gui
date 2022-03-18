@@ -2,7 +2,7 @@
   <div>
     <v-navigation-drawer v-model="drawer" absolute temporary>
       <v-list>
-        <v-list-item v-for="map in campaign.maps" :key="map.name" @click="displayMap(map)">
+        <v-list-item v-for="map in campaign.maps" :key="map.name" @click="selectMap(map)">
           {{ map.name }}
         </v-list-item>
       </v-list>
@@ -10,7 +10,7 @@
     <v-btn icon absolute text @click.stop="drawer = !drawer">
       <v-icon>mdi-chevron-double-right</v-icon>
     </v-btn>
-    <Map :map="map" :tokens="campaign.tokens" />
+    <Map :map="selectedMap" :tokens="campaign.tokens" :key="selectedMap.id" />
   </div>
 </template>
 
@@ -18,7 +18,7 @@
 import ICampaign from '@/interfaces/ICampaign';
 import { Component, Vue } from 'vue-property-decorator';
 import { namespace } from 'vuex-class';
-import { ActionTypes } from '@/store/campaigns/enums';
+import { ActionTypes, MutationTypes } from '@/store/campaigns/enums';
 import CampaignsFactory from '@/factories/CampaignsFactory';
 import IMap from '@/interfaces/IMap';
 import Map from '@/components/Map.vue'
@@ -40,20 +40,20 @@ export default class Play extends Vue {
     width: 0,
     tokens: []
   };
+
+  // @ts-ignore
+  @campaigns.State(state => state.selectedMap) selectedMap;
   
   // @ts-ignore
   @campaigns.Action(ActionTypes.GET_CAMPAIGN_DETAILS) getCampaignDetails;
+  // @ts-ignore
+  @campaigns.Mutation(MutationTypes.SELECT_MAP) selectMap;
   
   mounted() {
     this.getCampaignDetails(this.$route.params.id).then((campaign: ICampaign) => {
       this.campaign = campaign;
-      this.map = campaign.maps[0]
+      this.selectMap(campaign.maps[0]);
     });
-  }
-
-  displayMap(map: IMap) {
-    this.map = map;
-    this.drawer = false;
   }
 }
 </script>
