@@ -26,6 +26,10 @@ export default class Token extends Vue {
   @campaigns.Mutation(MutationTypes.UNSELECT_ALL_TOKENS) unselectAllTokens;
   // @ts-ignore
   @campaigns.Mutation(MutationTypes.SELECT_TOKEN) selectToken;
+  // @ts-ignore
+  @campaigns.Mutation(MutationTypes.START_TOKEN_DRAG) startTokenDrag;
+  // @ts-ignore
+  @campaigns.Mutation(MutationTypes.END_TOKEN_DRAG) endTokenDrag;
 
   private selected: boolean = false;
   
@@ -41,11 +45,12 @@ export default class Token extends Vue {
   }
 
   public startDrag(event: any) {
-    this.dragged = true;
+    this.startTokenDrag(this.position)
   }
 
   public endDrag(event: any) {
     this.dragged = false;
+    this.endTokenDrag();
   }
 }
 </script>

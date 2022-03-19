@@ -8,6 +8,7 @@ import { IState } from "./state";
 import { isEqual } from 'lodash';
 import IPosition from '@/interfaces/utils/IPosition'
 import { CELL_SIZE } from '@/utils/constants'
+import { Mutation } from "vuex-class";
 
 interface InvitationsPayload {
   campaign_id: string;
@@ -33,10 +34,19 @@ export type Mutations<S = IState> = {
    */
   [MutationTypes.SELECT_TOKEN](state: S, position: ITokenPosition): void;
   /**
+   * Stores the dragged token in the corresponding variable so that it will
+   * be moved when triggering the move move event.
+   */
+  [MutationTypes.START_TOKEN_DRAG](state: S, position: ITokenPosition): void;
+  /**
    * Moves a token to the selected X/Y coordinates by sticking it in the
    * corresponding cell. The cell is the one containing the coordinates.
    */
   [MutationTypes.MOVE_TOKEN](state: S, position: IPosition): void;
+  /**
+   * Ends the drag, setting the dragged flag to false to stop the token from moving.
+   */
+  [MutationTypes.END_TOKEN_DRAG](state: S): void;
 }
 
 export const mutations: MutationTree<IState> & Mutations = {
@@ -59,6 +69,7 @@ export const mutations: MutationTree<IState> & Mutations = {
     state.selectedMap = map;
     state.selectedMap.tokens.forEach((token: ITokenPosition) => {
       token.selected = false;
+      token.dragged = false;
     })
   },
   [MutationTypes.UNSELECT_ALL_TOKENS](state) {
@@ -71,16 +82,16 @@ export const mutations: MutationTree<IState> & Mutations = {
       return {...p, selected: isEqual(pos, p)};
     });
   },
+  [MutationTypes.START_TOKEN_DRAG](state, position) {
+    state.draggedIndex = state.selectedMap.tokens.findIndex((pos: ITokenPosition) => isEqual(position, pos));
+  },
   [MutationTypes.MOVE_TOKEN](state, {x, y}) {
-    state.selectedMap.tokens = state.selectedMap.tokens.map((token: ITokenPosition) => {
-      if (token.selected) {
-        token = {
-          ...token,
-          x: Math.floor((x - 50) /CELL_SIZE),
-          y: Math.floor((y - 50) /CELL_SIZE)
-        }
-      }
-      return token;
-    })
+    if(state.draggedIndex > -1 && state.draggedIndex < state.selectedMap.tokens.length) {
+      state.selectedMap.tokens[state.draggedIndex].x = Math.floor((x - 50) / CELL_SIZE)
+      state.selectedMap.tokens[state.draggedIndex].y = Math.floor((y - 50) / CELL_SIZE)
+    }
+  },
+  [MutationTypes.END_TOKEN_DRAG](state) {
+    state.draggedIndex = -1;
   }
 }

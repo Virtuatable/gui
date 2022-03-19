@@ -7,5 +7,6 @@ export interface ITokenPosition {
   x: number;
   y: number;
   id: string;
-  selected: boolean
+  selected: boolean;
+  dragged: boolean;
 };
