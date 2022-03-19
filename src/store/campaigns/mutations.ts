@@ -1,10 +1,13 @@
 import ICampaign from "@/interfaces/ICampaign";
 import IInvitation from "@/interfaces/IInvitation";
 import IMap from "@/interfaces/IMap";
-import { ITokenPosition } from "@/interfaces/IToken";
+import IToken, { ITokenPosition } from "@/interfaces/IToken";
 import { MutationTree } from "vuex";
 import { MutationTypes } from "./enums";
 import { IState } from "./state";
+import { isEqual } from 'lodash';
+import IPosition from '@/interfaces/utils/IPosition'
+import { CELL_SIZE } from '@/utils/constants'
 
 interface InvitationsPayload {
   campaign_id: string;
@@ -28,7 +31,12 @@ export type Mutations<S = IState> = {
   /**
    * Selects a token in the positions list.
    */
-  [MutationTypes.SELECT_TOKEN](state: S, position: ITokenPosition): void
+  [MutationTypes.SELECT_TOKEN](state: S, position: ITokenPosition): void;
+  /**
+   * Moves a token to the selected X/Y coordinates by sticking it in the
+   * corresponding cell. The cell is the one containing the coordinates.
+   */
+  [MutationTypes.MOVE_TOKEN](state: S, position: IPosition): void;
 }
 
 export const mutations: MutationTree<IState> & Mutations = {
@@ -58,14 +66,21 @@ export const mutations: MutationTree<IState> & Mutations = {
       return {...token, selected: false }
     });
   },
-  [MutationTypes.SELECT_TOKEN](state, position) {
-    console.log(position.x, position.y);
+  [MutationTypes.SELECT_TOKEN](state, pos) {
     state.selectedMap.tokens = state.selectedMap.tokens.map((p: ITokenPosition) => {
-      if (p.x == position.x && p.y == position.y && p.id == position.id) {
-        p.selected = true;
-      }
-      return p;
+      return {...p, selected: isEqual(pos, p)};
     });
-    console.log(state.selectedMap)
+  },
+  [MutationTypes.MOVE_TOKEN](state, {x, y}) {
+    state.selectedMap.tokens = state.selectedMap.tokens.map((token: ITokenPosition) => {
+      if (token.selected) {
+        token = {
+          ...token,
+          x: Math.floor((x - 50) /CELL_SIZE),
+          y: Math.floor((y - 50) /CELL_SIZE)
+        }
+      }
+      return token;
+    })
   }
 }

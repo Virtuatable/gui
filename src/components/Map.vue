@@ -1,13 +1,13 @@
 <template>
-  <div>
-    {{ map.tokens }}
-    <Canva v-if="map">
-      <template v-for="i in map.height">
-        <Cell v-for="j in map.width" :key="`${i}:${j}`" :x="j - 1" :y="i - 1" />
-      </template>
-      <Token v-for="(pos, idx) in map.tokens" :position="pos" :token="getToken(pos)" :key="idx" />
-    </Canva>
-  </div>
+<div>
+  {{ map }}
+  <Canva v-if="map">
+    <template v-for="i in map.height">
+      <Cell v-for="j in map.width" :key="`${i}:${j}`" :x="j - 1" :y="i - 1" />
+    </template>
+    <Token v-for="(pos, idx) in map.tokens" :position="pos" :token="getToken(pos)" :key="idx" />
+  </Canva>
+</div>
 </template>
 
 <script lang="ts">

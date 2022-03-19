@@ -20,6 +20,10 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
 import IPosition from '@/interfaces/utils/IPosition'
+import { namespace } from 'vuex-class';
+import { MutationTypes } from '@/store/campaigns/enums';
+
+const campaigns = namespace('campaigns')
 
 @Component
 export default class ZoomableCanva extends Vue {
@@ -33,6 +37,9 @@ export default class ZoomableCanva extends Vue {
   private scale: number = 1;
 
   selection: IPosition | null = null;
+
+  // @ts-ignore
+  @campaigns.Mutation(MutationTypes.MOVE_TOKEN) moveToken;
 
   public startDrag(event: any) {
     this.clickPosition = {
@@ -53,6 +60,8 @@ export default class ZoomableCanva extends Vue {
         y: (event.clientY - this.clickPosition.y),
       }
     }
+    console.log(event);
+    this.moveToken({x: event.layerX, y: event.layerY});
   }
 
   public zoom(event: any) {

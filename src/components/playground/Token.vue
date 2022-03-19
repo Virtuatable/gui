@@ -1,7 +1,7 @@
 <template>
-  <g @mousedown.stop @mouseup.stop @click="select">
+  <g @mousedown.stop="startDrag" @mouseup.stop="endDrag" @click="select">
     <rect :x="x" :y="y" :width="cellSize" :height="cellSize" class="token" :fill="color" />
-    <text :x="x" :y="y">{{ token.name }}</text>
+    <text :x="x + 5" :y="y + 20" fill="white">{{ token.name }}</text>
   </g>
 </template>
 
@@ -20,6 +20,8 @@ export default class Token extends Vue {
   @Prop() private position!: ITokenPosition;
   @Prop() private token!: IToken;
 
+  dragged: boolean = false;
+
   // @ts-ignore
   @campaigns.Mutation(MutationTypes.UNSELECT_ALL_TOKENS) unselectAllTokens;
   // @ts-ignore
@@ -36,6 +38,14 @@ export default class Token extends Vue {
   public select() {
     this.unselectAllTokens();
     this.selectToken(this.position);
+  }
+
+  public startDrag(event: any) {
+    this.dragged = true;
+  }
+
+  public endDrag(event: any) {
+    this.dragged = false;
   }
 }
 </script>
