@@ -8,7 +8,8 @@ export enum MutationTypes {
   SELECT_TOKEN = 'SELECT_TOKEN',
   START_TOKEN_DRAG = 'START_TOKEN_DRAG',
   END_TOKEN_DRAG = 'END_TOKEN_DRAG',
-  MOVE_TOKEN = 'MOVE_TOKEN'
+  MOVE_TOKEN = 'MOVE_TOKEN',
+  MOVE_ORIGIN = 'MOVE_ORIGIN'
 }
 
 export enum ActionTypes {

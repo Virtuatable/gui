@@ -28,7 +28,8 @@ const campaigns = namespace('campaigns')
 @Component
 export default class ZoomableCanva extends Vue {
 
-  private origin: IPosition = {x: 50, y: 50}
+  // @ts-ignore
+  @campaigns.State('origin') origin;
 
   private clickPosition!: IPosition;
 
@@ -42,6 +43,8 @@ export default class ZoomableCanva extends Vue {
   @campaigns.Mutation(MutationTypes.MOVE_TOKEN) moveToken;
   // @ts-ignore
   @campaigns.Mutation(MutationTypes.END_TOKEN_DRAG) endTokenDrag;
+  // @ts-ignore
+  @campaigns.Mutation(MutationTypes.MOVE_ORIGIN) moveOrigin;
 
   public startDrag(event: any) {
     this.clickPosition = {
@@ -58,10 +61,10 @@ export default class ZoomableCanva extends Vue {
 
   public moveDrag(event: any) {
     if (this.dragged) {
-      this.origin = {
+      this.moveOrigin({
         x: (event.clientX - this.clickPosition.x),
         y: (event.clientY - this.clickPosition.y),
-      }
+      });
     }
     this.moveToken({x: event.layerX, y: event.layerY})
   }

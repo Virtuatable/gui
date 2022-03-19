@@ -47,6 +47,7 @@ export type Mutations<S = IState> = {
    * Ends the drag, setting the dragged flag to false to stop the token from moving.
    */
   [MutationTypes.END_TOKEN_DRAG](state: S): void;
+  [MutationTypes.MOVE_ORIGIN](state: S, origin: IPosition): void;
 }
 
 export const mutations: MutationTree<IState> & Mutations = {
@@ -87,11 +88,16 @@ export const mutations: MutationTree<IState> & Mutations = {
   },
   [MutationTypes.MOVE_TOKEN](state, {x, y}) {
     if(state.draggedIndex > -1 && state.draggedIndex < state.selectedMap.tokens.length) {
-      state.selectedMap.tokens[state.draggedIndex].x = Math.floor((x - 50) / CELL_SIZE)
-      state.selectedMap.tokens[state.draggedIndex].y = Math.floor((y - 50) / CELL_SIZE)
+      const tX = Math.floor((x - state.origin.x) / CELL_SIZE)
+      const tY = Math.floor((y - state.origin.y) / CELL_SIZE)
+      state.selectedMap.tokens[state.draggedIndex].x = tX;
+      state.selectedMap.tokens[state.draggedIndex].y = tY;
     }
   },
   [MutationTypes.END_TOKEN_DRAG](state) {
     state.draggedIndex = -1;
+  },
+  [MutationTypes.MOVE_ORIGIN](state, origin) {
+    state.origin = origin;
   }
 }
