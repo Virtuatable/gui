@@ -1,7 +1,6 @@
 <template>
   <g @mousedown.stop="startDrag" @mouseup.stop="endDrag" @click="select">
     <rect :x="x" :y="y" :width="cellSize" :height="cellSize" class="token" :fill="color" />
-    <text :x="x + 5" :y="y + 20" fill="white">{{ token.name }}</text>
   </g>
 </template>
 

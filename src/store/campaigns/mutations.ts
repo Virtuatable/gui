@@ -88,10 +88,8 @@ export const mutations: MutationTree<IState> & Mutations = {
   },
   [MutationTypes.MOVE_TOKEN](state, {x, y}) {
     if(state.draggedIndex > -1 && state.draggedIndex < state.selectedMap.tokens.length) {
-      const tX = Math.floor((x - state.origin.x) / CELL_SIZE)
-      const tY = Math.floor((y - state.origin.y) / CELL_SIZE)
-      state.selectedMap.tokens[state.draggedIndex].x = tX;
-      state.selectedMap.tokens[state.draggedIndex].y = tY;
+      state.selectedMap.tokens[state.draggedIndex].x = x;
+      state.selectedMap.tokens[state.draggedIndex].y = y;
     }
   },
   [MutationTypes.END_TOKEN_DRAG](state) {

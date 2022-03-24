@@ -40,8 +40,6 @@ export default class ZoomableCanva extends Vue {
   selection: IPosition | null = null;
 
   // @ts-ignore
-  @campaigns.Mutation(MutationTypes.MOVE_TOKEN) moveToken;
-  // @ts-ignore
   @campaigns.Mutation(MutationTypes.END_TOKEN_DRAG) endTokenDrag;
   // @ts-ignore
   @campaigns.Mutation(MutationTypes.MOVE_ORIGIN) moveOrigin;
@@ -66,7 +64,6 @@ export default class ZoomableCanva extends Vue {
         y: (event.clientY - this.clickPosition.y),
       });
     }
-    this.moveToken({x: event.layerX, y: event.layerY})
   }
 
   public zoom(event: any) {
