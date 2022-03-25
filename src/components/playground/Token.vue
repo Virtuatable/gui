@@ -1,6 +1,7 @@
 <template>
-  <g @mousedown.stop="startDrag" @mouseup.stop="endDrag" @click="select">
-    <rect :x="x" :y="y" :width="cellSize" :height="cellSize" class="token" :fill="color" />
+  <g @mousedown.stop="startDrag" @mouseup.stop="endDrag" @click.stop="select">
+    <circle :cx="x" :cy="y" :r="cellSize / 2" :width="cellSize" :height="cellSize" class="token" :fill="color" />
+    <text class="token-name" :x="x - 45" :y="y + 65" fill="grey" stroke="white" stroke-width="0.5" @click.stop>{{ token.name }}</text>
   </g>
 </template>
 
@@ -34,8 +35,8 @@ export default class Token extends Vue {
   
   private cellSize: number = CELL_SIZE;
 
-  public get x():number { return this.position.x * CELL_SIZE; }
-  public get y():number { return this.position.y * CELL_SIZE; }
+  public get x():number { return (this.position.x + 0.5) * CELL_SIZE; }
+  public get y():number { return (this.position.y + 0.5) * CELL_SIZE; }
   public get color(): string { return this.position.selected ? 'blue': 'red' }
 
   public select() {
@@ -58,5 +59,9 @@ export default class Token extends Vue {
 .token {
   stroke: silver;
   stroke-width: 3px;
+}
+.token-name {
+  pointer-events: none;
+  user-select: none;
 }
 </style>

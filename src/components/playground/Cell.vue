@@ -5,6 +5,7 @@
     :x="x * cellSize" :y="y * cellSize"
     class="cell"
     @mouseenter="moveToken({x, y})"
+    @click="unselectAllTokens"
   />
 </template>
 
@@ -26,6 +27,8 @@ export default class Cell extends Vue {
   @Prop({ default: 0 }) private y!: number;
   // Size, in pixels of both the height and width of a cell.
   private cellSize: number = CELL_SIZE;
+  // @ts-ignore
+  @campaigns.Mutation(MutationTypes.UNSELECT_ALL_TOKENS) unselectAllTokens;
 }
 </script>
 

@@ -1,14 +1,12 @@
 import ICampaign from "@/interfaces/ICampaign";
 import IInvitation from "@/interfaces/IInvitation";
 import IMap from "@/interfaces/IMap";
-import IToken, { ITokenPosition } from "@/interfaces/IToken";
+import { ITokenPosition } from "@/interfaces/IToken";
 import { MutationTree } from "vuex";
 import { MutationTypes } from "./enums";
 import { IState } from "./state";
-import { isEqual } from 'lodash';
+import { isEqual, find, findIndex, clone } from 'lodash';
 import IPosition from '@/interfaces/utils/IPosition'
-import { CELL_SIZE } from '@/utils/constants'
-import { Mutation } from "vuex-class";
 
 interface InvitationsPayload {
   campaign_id: string;
@@ -80,14 +78,14 @@ export const mutations: MutationTree<IState> & Mutations = {
   },
   [MutationTypes.SELECT_TOKEN](state, pos) {
     state.selectedMap.tokens = state.selectedMap.tokens.map((p: ITokenPosition) => {
-      return {...p, selected: isEqual(pos, p)};
+      return {...p, selected: pos.id == p.id && pos.x == p.x && pos.y == p.y};
     });
   },
-  [MutationTypes.START_TOKEN_DRAG](state, position) {
-    state.draggedIndex = state.selectedMap.tokens.findIndex((pos: ITokenPosition) => isEqual(position, pos));
+  [MutationTypes.START_TOKEN_DRAG](state, {id, x, y}) {
+    state.draggedIndex = findIndex(state.selectedMap.tokens, {id, x, y});
   },
   [MutationTypes.MOVE_TOKEN](state, {x, y}) {
-    if(state.draggedIndex > -1 && state.draggedIndex < state.selectedMap.tokens.length) {
+    if(state.draggedIndex > -1 && !find(state.selectedMap.tokens, {x, y})) {
       state.selectedMap.tokens[state.draggedIndex].x = x;
       state.selectedMap.tokens[state.draggedIndex].y = y;
     }
