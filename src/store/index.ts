@@ -2,6 +2,7 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 import { campaigns } from './campaigns';
 import { sessions } from './sessions'
+import { canva } from './canva'
 
 Vue.use(Vuex);
 
@@ -16,6 +17,7 @@ export default new Vuex.Store({
   },
   modules: {
     campaigns,
-    sessions
+    sessions,
+    canva
   },
 });

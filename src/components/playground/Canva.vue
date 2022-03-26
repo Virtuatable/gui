@@ -1,20 +1,20 @@
 <template>
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      @mousedown="startDrag"
-      @mouseup="endDrag"
-      @wheel="zoom"
-      @mousemove="moveDrag"
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    @mousedown="startDrag({x: $event.clientX, y: $event.clientY})"
+    @mouseup="endDrag()"
+    @wheel="setScale($event.deltaY);"
+    @mousemove="moveDrag({x: $event.clientX, y: $event.clientY})"
+  >
+    <g
+      class="draggable"
+      draggable
+      :transform="`translate(${position.x} ${position.y}) scale(${scale} ${scale})`"
+      ref="mainGroup"
     >
-      <g
-        class="draggable"
-        draggable
-        :transform="`translate(${origin.x} ${origin.y}) scale(${scale} ${scale})`"
-        ref="mainGroup"
-      >
-        <slot />
-      </g>
-    </svg>
+      <slot />
+    </g>
+  </svg>
 </template>
 
 <script lang="ts">
@@ -22,55 +22,33 @@ import { Component, Vue } from 'vue-property-decorator'
 import IPosition from '@/interfaces/utils/IPosition'
 import { namespace } from 'vuex-class';
 import { MutationTypes } from '@/store/campaigns/enums';
+import { ns } from '@/utils/namespaces'
+import { CanvaMTypes, canvaMutations } from '@/store/canva/mutations';
 
 const campaigns = namespace('campaigns')
 
 @Component
 export default class ZoomableCanva extends Vue {
 
-  // @ts-ignore
-  @campaigns.State('origin') origin;
-
-  private clickPosition!: IPosition;
-
-  private dragged: boolean = false;
-
-  private scale: number = 1;
-
   selection: IPosition | null = null;
+
+  @ns.canva.State('scale') scale!: number;
+  
+  @ns.canva.State('position') position!: number;
+
+  // @ts-ignore
+  @ns.canva.Mutation(CanvaMTypes.END_DRAG) endDrag;
+  // @ts-ignore
+  @ns.canva.Mutation(CanvaMTypes.MOVE_DRAG) moveDrag;
+  // @ts-ignore
+  @ns.canva.Mutation(CanvaMTypes.START_DRAG) startDrag;
+  // @ts-ignore
+  @ns.canva.Mutation(CanvaMTypes.SET_SCALE) setScale;
 
   // @ts-ignore
   @campaigns.Mutation(MutationTypes.END_TOKEN_DRAG) endTokenDrag;
   // @ts-ignore
   @campaigns.Mutation(MutationTypes.MOVE_ORIGIN) moveOrigin;
-
-  public startDrag(event: any) {
-    this.clickPosition = {
-      x: event.clientX - this.origin.x,
-      y: event.clientY - this.origin.y
-    };
-    this.dragged = true;
-  }
-
-  public endDrag(event: any) {
-    this.dragged = false;
-    this.endTokenDrag();
-  }
-
-  public moveDrag(event: any) {
-    if (this.dragged) {
-      this.moveOrigin({
-        x: (event.clientX - this.clickPosition.x),
-        y: (event.clientY - this.clickPosition.y),
-      });
-    }
-  }
-
-  public zoom(event: any) {
-    this.endDrag(event);
-    this.scale += event.deltaY * -0.01;
-    this.scale = Math.min(Math.max(.125, this.scale), 4);
-  }
 }
 </script>
 
