@@ -10,7 +10,7 @@
     <v-btn icon absolute text @click.stop="drawer = !drawer">
       <v-icon>mdi-chevron-double-right</v-icon>
     </v-btn>
-    <Map :map="selectedMap" :tokens="campaign.tokens" :key="selectedMap.id" />
+    <Map :map="selectedMap" :campaign="campaign" :key="selectedMap.id" />
   </div>
 </template>
 

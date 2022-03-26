@@ -3,7 +3,7 @@
     <template v-for="i in map.height">
       <Cell v-for="j in map.width" :key="`${i}:${j}`" :x="j - 1" :y="i - 1" />
     </template>
-    <Token v-for="(pos, idx) in sortedTokens" :position="pos" :token="getToken(pos)" :key="idx" />
+    <Token v-for="(pos, idx) in sortedTokens" :position="pos" :token="getToken(pos)" :key="idx" :campaign="campaign" />
   </Canva>
 </template>
 
@@ -15,7 +15,9 @@ import Canva from '@/components/playground/Canva.vue'
 import Cell from '@/components/playground/Cell.vue'
 import Token from '@/components/playground/Token.vue'
 import { sortBy } from 'lodash'
-import { namespace } from 'vuex-class'
+import CampaignsFactory from '@/factories/CampaignsFactory';
+import ICampaign from '@/interfaces/ICampaign';
+import api from '@/api/utils/Api'
 
 @Component({
   components: { Canva, Cell, Token }
@@ -23,14 +25,14 @@ import { namespace } from 'vuex-class'
 export default class Map extends Vue {
   @Prop() private map!: IMap;
 
-  @Prop({ default: () => [] }) private tokens!:Array<IToken>;
+  @Prop({ default: CampaignsFactory.empty }) private campaign!: ICampaign;
 
-  public getToken(position: ITokenPosition): IToken|undefined {
-    return this.tokens.find(t => t.id == position.id);
+  public avatar(token: IToken) {
+    return api.path('/tokens/' + this.campaign.id + '/' + token.id + '.jpg')
   }
 
-  public pouet() {
-    console.log("test pouet");
+  public getToken(position: ITokenPosition): IToken|undefined {
+    return this.campaign.tokens.find(t => t.id == position.token_id);
   }
 
   /**

@@ -1,6 +1,23 @@
 <template>
   <g @mousedown.stop="startDrag" @mouseup.stop="endDrag" @click.stop="select">
-    <circle :cx="x" :cy="y" :r="cellSize / 2" :width="cellSize" :height="cellSize" class="token" :fill="color" />
+    <pattern
+      :id="position.id"
+      x="0"
+      y="0"
+      height="1"
+      width="1"
+    >
+      <image x="0" y="0" width="100" :xlink:href="avatar" />
+    </pattern>
+    <circle
+      :cx="x"
+      :cy="y"
+      :r="cellSize / 2"
+      :width="cellSize"
+      :height="cellSize"
+      :fill="`url(#${position.id})`"
+      class="token"
+    />
     <text class="token-name" :x="x - 45" :y="y + 65" fill="grey" stroke="white" stroke-width="0.5" @click.stop>{{ token.name }}</text>
   </g>
 </template>
@@ -11,6 +28,9 @@ import IToken, { ITokenPosition }  from '@/interfaces/IToken'
 import { CELL_SIZE } from '@/utils/constants'
 import { namespace } from 'vuex-class'
 import { MutationTypes } from '@/store/campaigns/enums';
+import api from '@/api/utils/Api'
+import CampaignsFactory from '@/factories/CampaignsFactory';
+import ICampaign from '@/interfaces/ICampaign';
 
 const campaigns = namespace('campaigns');
 
@@ -19,8 +39,11 @@ export default class Token extends Vue {
 
   @Prop() private position!: ITokenPosition;
   @Prop() private token!: IToken;
+  @Prop({ default: CampaignsFactory.empty }) campaign!: ICampaign;
 
   dragged: boolean = false;
+
+  private api = api;
 
   // @ts-ignore
   @campaigns.Mutation(MutationTypes.UNSELECT_ALL_TOKENS) unselectAllTokens;
@@ -51,6 +74,10 @@ export default class Token extends Vue {
   public endDrag(event: any) {
     this.dragged = false;
     this.endTokenDrag();
+  }
+
+  public get avatar(): string {
+    return api.path('/tokens/' + this.campaign.id + '/' + this.token.id + '.jpg')
   }
 }
 </script>
