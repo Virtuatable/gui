@@ -1,6 +1,7 @@
 export default interface IToken {
   id: string;
   name: string;
+  file_extension: string;
 }
 
 export interface ITokenPosition {

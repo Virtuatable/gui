@@ -3,7 +3,7 @@
     <template v-for="i in map.height">
       <Cell v-for="j in map.width" :key="`${i}:${j}`" :x="j - 1" :y="i - 1" />
     </template>
-    <Token v-for="(pos, idx) in sortedTokens" :position="pos" :token="getToken(pos)" :key="idx" />
+    <Token v-for="pos in sortedTokens" :campaign="campaign" :position="pos" :key="pos.id" />
   </Canva>
 </template>
 
@@ -27,17 +27,13 @@ export default class Map extends Vue {
 
   @Prop({ default: CampaignsFactory.empty }) private campaign!: ICampaign;
 
-  public getToken(position: ITokenPosition): IToken|undefined {
-    return this.campaign.tokens.find(t => t.id == position.token_id);
-  }
-
   /**
    * Sorts the tokens by descending Y coordinate so that the lower ones
    * are displayed before, therefore not hiding the labels of the higher ones.
    * @return {Array<ITokenPosition>} the sorted positions of the tokens.
    */
   public get sortedTokens(): Array<ITokenPosition> {
-    return sortBy(this.map.tokens, (t: ITokenPosition) => -t.y);
+    return sortBy(this.map.tokens, ['y', 'x', 'id']).reverse()
   }
 }
 </script>
