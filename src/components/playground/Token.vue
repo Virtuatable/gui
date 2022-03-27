@@ -7,7 +7,7 @@
       height="1"
       width="1"
     >
-      <image x="0" y="0" v-bind="sizeLimiters" :key="`image-${token.id}`" :xlink:href="avatar" />
+      <image v-bind="sizeLimiters" :key="`image-${token.id}`" :xlink:href="avatar" />
     </pattern>
     <circle
       :cx="x"
@@ -79,14 +79,19 @@ export default class Token extends Vue {
   }
 
   public mounted() {
-    console.log("mounted");
     const uri = `/tokens/${this.campaign.id}/${this.token?.id}.${this.token?.file_extension}`;
     ImagesFactory.getSize(uri).then((dimension: IDimension) => {
       if (dimension.width > dimension.height) {
-        this.sizeLimiters = {height: this.cellSize }
+        this.sizeLimiters = {
+          height: this.cellSize,
+          x: -((dimension.width / dimension.height * CELL_SIZE) - CELL_SIZE) / 2
+        }
       }
       else {
-        this.sizeLimiters = {width: this.cellSize}
+        this.sizeLimiters = {
+          width: this.cellSize,
+          y: -((dimension.height / dimension.width * CELL_SIZE) - CELL_SIZE) / 2
+        }
       }
     })
   }
