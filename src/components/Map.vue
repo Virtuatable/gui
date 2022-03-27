@@ -15,7 +15,9 @@ import Canva from '@/components/playground/Canva.vue'
 import Cell from '@/components/playground/Cell.vue'
 import Token from '@/components/playground/Token.vue'
 import { sortBy } from 'lodash'
+import ICampaign from '@/interfaces/ICampaign'
 import { namespace } from 'vuex-class'
+import CampaignsFactory from '@/factories/CampaignsFactory';
 
 @Component({
   components: { Canva, Cell, Token }
@@ -23,14 +25,10 @@ import { namespace } from 'vuex-class'
 export default class Map extends Vue {
   @Prop() private map!: IMap;
 
-  @Prop({ default: () => [] }) private tokens!:Array<IToken>;
+  @Prop({ default: CampaignsFactory.empty }) private campaign!: ICampaign;
 
   public getToken(position: ITokenPosition): IToken|undefined {
-    return this.tokens.find(t => t.id == position.id);
-  }
-
-  public pouet() {
-    console.log("test pouet");
+    return this.campaign.tokens.find(t => t.id == position.token_id);
   }
 
   /**

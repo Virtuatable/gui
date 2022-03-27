@@ -7,6 +7,7 @@ export interface ITokenPosition {
   x: number;
   y: number;
   id: string;
+  token_id: string;
   selected: boolean;
   dragged: boolean;
 };
