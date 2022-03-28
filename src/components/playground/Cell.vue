@@ -5,20 +5,15 @@
     :x="x * cellSize" :y="y * cellSize"
     class="cell"
     @mouseenter="moveToken({x, y})"
-    @mouseup="stopDrag"
-    @click="unselectAllTokens"
+    @mouseup="stopDrag()"
   />
 </template>
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import { CELL_SIZE } from '@/utils/constants'
-import { namespace } from 'vuex-class';
-import { MutationTypes } from '@/store/campaigns/enums';
 import { ns } from '@/utils/namespaces'
 import { TokensMTypes } from '@/store/tokens/mutations';
-
-const campaigns = namespace('campaigns')
 
 @Component
 export default class Cell extends Vue {
@@ -30,8 +25,6 @@ export default class Cell extends Vue {
   @Prop({ default: 0 }) private y!: number;
   // Size, in pixels of both the height and width of a cell.
   private cellSize: number = CELL_SIZE;
-  // @ts-ignore
-  @campaigns.Mutation(MutationTypes.UNSELECT_ALL_TOKENS) unselectAllTokens;
 
   @ns.tokens.Mutation(TokensMTypes.STOP_DRAG) stopDrag: any;
 }
