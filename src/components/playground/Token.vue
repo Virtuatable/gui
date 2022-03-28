@@ -1,5 +1,9 @@
 <template>
-  <g @mousedown.stop="startDrag" @mouseup.stop="endDrag" @click.stop="select">
+  <g
+    @mousedown.stop="startDrag(position)"
+    @mouseup.stop="stopDrag(position)"
+    @click.stop="select"
+  >
     <pattern
       :id="position.id"
       x="0"
@@ -7,7 +11,7 @@
       height="1"
       width="1"
     >
-      <image v-bind="sizeLimiters" :key="`image-${token.id}`" :xlink:href="avatar" />
+      <image v-bind="adjustments" :key="`image-${token.id}`" :xlink:href="avatar" />
     </pattern>
     <circle
       :cx="x"
@@ -31,6 +35,8 @@ import CampaignsFactory from '@/factories/CampaignsFactory';
 import ICampaign from '@/interfaces/ICampaign';
 import IDimension from '@/interfaces/IDimension';
 import api from '@/api/utils/Api'
+import { ns } from '@/utils/namespaces'
+import { TokensMTypes } from '@/store/tokens/mutations';
 
 const campaigns = namespace('campaigns');
 
@@ -42,16 +48,16 @@ export default class Token extends Vue {
 
   dragged: boolean = false;
 
-  private sizeLimiters: any = {};
+  private adjustments: any = {};
+
+  @ns.tokens.Mutation(TokensMTypes.START_DRAG) startDrag: any;
+
+  @ns.tokens.Mutation(TokensMTypes.STOP_DRAG) stopDrag: any;
 
   // @ts-ignore
   @campaigns.Mutation(MutationTypes.UNSELECT_ALL_TOKENS) unselectAllTokens;
   // @ts-ignore
   @campaigns.Mutation(MutationTypes.SELECT_TOKEN) selectToken;
-  // @ts-ignore
-  @campaigns.Mutation(MutationTypes.START_TOKEN_DRAG) startTokenDrag;
-  // @ts-ignore
-  @campaigns.Mutation(MutationTypes.END_TOKEN_DRAG) endTokenDrag;
 
   private selected: boolean = false;
   
@@ -69,30 +75,10 @@ export default class Token extends Vue {
     this.selectToken(this.position);
   }
 
-  public startDrag(event: any) {
-    this.startTokenDrag(this.position)
-  }
-
-  public endDrag(event: any) {
-    this.dragged = false;
-    this.endTokenDrag();
-  }
-
   public mounted() {
     const uri = `/tokens/${this.campaign.id}/${this.token?.id}.${this.token?.file_extension}`;
-    ImagesFactory.getSize(uri).then((dimension: IDimension) => {
-      if (dimension.width > dimension.height) {
-        this.sizeLimiters = {
-          height: this.cellSize,
-          x: -((dimension.width / dimension.height * CELL_SIZE) - CELL_SIZE) / 2
-        }
-      }
-      else {
-        this.sizeLimiters = {
-          width: this.cellSize,
-          y: -((dimension.height / dimension.width * CELL_SIZE) - CELL_SIZE) / 2
-        }
-      }
+    ImagesFactory.getSize(uri).then(({width, height}: IDimension) => {
+      this.adjustments = ImagesFactory.getAdjustments(width, height)
     })
   }
   public get avatar(): string {
