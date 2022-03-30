@@ -16,6 +16,8 @@ import Token from '@/components/playground/Token.vue'
 import { sortBy } from 'lodash'
 import ICampaign from '@/interfaces/ICampaign'
 import CampaignsFactory from '@/factories/CampaignsFactory';
+import { ITokenPosition } from '@/interfaces/IToken';
+import { ns } from '@/utils/namespaces'
 
 @Component({
   components: { Canva, Cell, Token }
@@ -24,6 +26,8 @@ export default class Map extends Vue {
   @Prop() private map!: IMap;
 
   @Prop({ default: CampaignsFactory.empty }) private campaign!: ICampaign;
+
+  @ns.tokens.State('dragged') dragged!: ITokenPosition;
 
   /**
    * Sorts the tokens by descending Y coordinate so that the lower ones
