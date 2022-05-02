@@ -5,14 +5,14 @@ module.exports = {
   ],
   configureWebpack: {
     output: {
-      filename: "[name].js",
-      chunkFilename: "[name].chunk.js"
+      filename: "js/[name].js",
+      chunkFilename: "js/[name].js"
     },
   },
   css: {
     extract: {
-      filename: "[name].css",
-      chunkFilename: "[name].chunk.css"
+      filename: "css/[name].css",
+      chunkFilename: "css/[name].css"
     }
   }
 };
