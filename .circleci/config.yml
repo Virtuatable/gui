@@ -10,6 +10,9 @@ jobs:
           name: Install dependencies
           command: npm install
       - run:
+          name: Copy the environment
+          command: printenv > .env
+      - run:
           name: Build the project into the ./dist folder
           command: npm run build
       - run:
