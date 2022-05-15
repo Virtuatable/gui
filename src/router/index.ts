@@ -27,6 +27,13 @@ const routes: Array<RouteConfig> = [
     component: Login,
   },
   {
+    path: 'oauth-redirect',
+    name: 'OAuth Redirect',
+    beforeEnter(to: any, from: any, next: Function) {
+      console.log(from);
+    }
+  },
+  {
     path: '/campaigns',
     name: 'Campaigns list',
     component: CampaignsList,

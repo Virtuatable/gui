@@ -3,24 +3,7 @@
     <div class="d-flex full-width flex-column">
       <HomeMenu />
       <div class="d-flex align-center flex-grow-1">
-        <v-container>
-          <v-row>
-            <v-col cols="6" offset="3">
-              <v-card>
-                <v-card-title>Login</v-card-title>
-                <v-card-text>
-                  <v-form class="pa-2">
-                    <v-text-field outlined v-model="credentials.username" label="Username"></v-text-field>
-                    <v-text-field outlined v-model="credentials.password" label="Password" type="password"></v-text-field>
-                  </v-form>
-                </v-card-text>
-                <v-card-actions>
-                  <v-btn @click="createSession(credentials)" text color="primary">Log in</v-btn>
-                </v-card-actions>
-              </v-card>
-            </v-col>
-          </v-row>
-        </v-container>
+        <iframe height="100%" width="100%" :src="authUri"></iframe>
       </div>
     </div>
   </v-main>
@@ -40,12 +23,16 @@ const sessions = namespace('sessions');
 })
 export default class Login extends Vue {
 
-  public credentials: ICredentials = {
-    username: '',
-    password: ''
-  };
+  public credentials: ICredentials = { username: '', password: '' };
   // @ts-ignore
   @sessions.Action(ActionTypes.CREATE_SESSION) createSession;
+
+  public get authUri(): string {
+    const rootUri = process.env.VUE_APP_ROOT_AUTH_URI;
+    const clientId = process.env.VUE_APP_CLIENT_ID;
+    const redirectUri = process.env.VUE_APP_REDIRECT_URI;
+    return `${rootUri}/auth/ui/login?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=code`
+  }
 }
 </script>
 
