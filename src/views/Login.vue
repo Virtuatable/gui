@@ -15,6 +15,7 @@ import { ActionTypes } from '@/store/sessions/enums';
 import { Component, Vue } from 'vue-property-decorator'
 import { namespace } from 'vuex-class'
 import HomeMenu from '@/components/HomeMenu.vue'
+import AuthenticationFactory from '@/factories/AuthenticationFactory'
 
 const sessions = namespace('sessions');
 
@@ -32,6 +33,19 @@ export default class Login extends Vue {
     const clientId = process.env.VUE_APP_CLIENT_ID;
     const redirectUri = process.env.VUE_APP_REDIRECT_URI;
     return `${rootUri}/auth/ui/login?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=code`
+  }
+
+  public mounted() {
+    const checker = setInterval(
+      () => {
+        const code = localStorage.getItem('authcode') as string;
+        if (code != null) {
+          AuthenticationFactory.createToken(code);
+          clearInterval(checker)
+        }
+      },
+      500
+    )
   }
 }
 </script>

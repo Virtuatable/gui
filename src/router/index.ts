@@ -30,7 +30,7 @@ const routes: Array<RouteConfig> = [
     path: 'oauth-redirect',
     name: 'OAuth Redirect',
     beforeEnter(to: any, from: any, next: Function) {
-      console.log(from);
+      localStorage.setItem('authcode', to.query.authorization_code)
     }
   },
   {
